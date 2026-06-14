@@ -17,4 +17,13 @@ services:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
+    depends_on:
+      - prometheus
+    restart: always
+
+  blackbox:
+    image: prom/blackbox-exporter:latest
+    container_name: blackbox
+    ports:
+      - "9115:9115"
     restart: always
