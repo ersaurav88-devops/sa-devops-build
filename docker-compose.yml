@@ -6,17 +6,15 @@ services:
     restart: always
 
   prometheus:
-    image: prom/prometheus:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.prometheus
     ports:
       - "9090:9090"
-    volumes:
-    - /opt/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
     restart: always
 
   grafana:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
-    depends_on:
-      - prometheus
     restart: always
