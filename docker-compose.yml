@@ -4,29 +4,3 @@ services:
     ports:
       - "80:80"
     restart: always
-
-  prometheus:
-    build:
-      context: .
-      dockerfile: Dockerfile.prometheus
-    ports:
-      - "9090:9090"
-    restart: always
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    depends_on:
-      - prometheus
-    restart: always
-
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    ports:
-      - "8081:8080"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run/docker.sock:ro
-      - /sys:/sys:ro
-    restart: always
