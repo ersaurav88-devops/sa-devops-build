@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     environment {
         DOCKER_CREDS = 'dockerhub-creds'
         DOCKER_USER  = 'shouravawasthi'
@@ -71,12 +72,34 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            steps {
+                script {
+
+                    if (env.BRANCH_NAME == 'dev') {
+
+                        sh '''
+                        chmod +x deploy.sh
+                        ./deploy.sh dev
+                        '''
+
+                    } else if (env.BRANCH_NAME == 'main' || env.BRANCH_NAME == 'master') {
+
+                        sh '''
+                        chmod +x deploy.sh
+                        ./deploy.sh prod
+                        '''
+                    }
+                }
+            }
+        }
     }
 
     post {
 
         success {
-            echo 'Docker image successfully pushed to Docker Hub.'
+            echo 'Docker image successfully pushed and deployed.'
         }
 
         failure {
